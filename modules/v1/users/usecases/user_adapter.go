@@ -8,6 +8,8 @@ import (
 type UserAdapter interface {
 	RegisterUser(input domain.RegisterUserInput) (domain.User, error)
 	LoginUser(input domain.LoginUserInput) (domain.User, error)
+	GetUserByID(id int) (domain.User, error)
+	AllSocialMedia() ([]domain.SocialMedia, error)
 }
 
 type UserUseCase struct {

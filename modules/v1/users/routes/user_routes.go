@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"mygram/infrastructures/middlewares"
 	userControllerV1 "mygram/modules/v1/users/interfaces/controllers"
 
 	"github.com/gin-gonic/gin"
@@ -9,6 +10,8 @@ import (
 
 func NewRouter(router *gin.Engine, db *gorm.DB) *gin.Engine {
 	userControllerV1 := userControllerV1.NewUserController(db)
+	mid := middlewares.NewMiddleware(db)
+
 	api := router.Group("/api/v1")
 	users := api.Group("/users")
 	{
@@ -16,10 +19,10 @@ func NewRouter(router *gin.Engine, db *gorm.DB) *gin.Engine {
 		users.POST("/login", userControllerV1.Login)
 	}
 
-	// //Social media
-	// api := router.Group("/api/v1")
-	// {
-
-	// }
+	//Social media
+	social := api.Group("/media", mid.Auth())
+	{
+		social.GET("", userControllerV1.GetSocialMedia)
+	}
 	return router
 }

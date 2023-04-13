@@ -6,7 +6,7 @@ import (
 	"mygram/modules/v1/users/domain"
 	api "mygram/pkg/api_response"
 	error "mygram/pkg/http-error"
-	"mygram/pkg/jwt"
+	jwt "mygram/pkg/token"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -121,5 +121,22 @@ func (uc *UserController) Login(c *gin.Context) {
 	}
 	userResponse := api.SetUserResponse(user, token)
 	resp := api.APIResponse("Login Success", http.StatusOK, "success", userResponse)
+	c.JSON(http.StatusOK, resp)
+}
+
+func (uc *UserController) GetSocialMedia(c *gin.Context) {
+	media, err := uc.UserUseCase.AllSocialMedia()
+	if err != nil {
+		log.Println(err)
+		resp := api.APIResponse("Get Social Media Failed", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	if len(media) == 0 {
+		resp := api.APIResponse("Social Media Not Found!", http.StatusOK, "success", nil)
+		c.JSON(http.StatusOK, resp)
+		return
+	}
+	resp := api.APIResponse("Get Social Media Success", http.StatusOK, "success", media)
 	c.JSON(http.StatusOK, resp)
 }

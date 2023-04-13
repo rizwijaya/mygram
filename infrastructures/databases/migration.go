@@ -43,5 +43,4 @@ type SocialMedia struct {
 	Name             string `json:"name" gorm:"column:name;type:varchar(100);not null"`
 	Social_media_url string `json:"social_media_url" gorm:"column:social_media_url;type:varchar(200);not null"`
 	UserID           int    `json:"user_id" gorm:"column:user_id;type:int;not null"`
-	User             *User  `json:"user" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
 }

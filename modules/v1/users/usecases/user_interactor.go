@@ -61,3 +61,19 @@ func (u *UserUseCase) LoginUser(input domain.LoginUserInput) (domain.User, error
 
 	return user, nil
 }
+
+func (u *UserUseCase) GetUserByID(id int) (domain.User, error) {
+	user, err := u.repoUser.FindUserByID(id)
+	if err != nil {
+		return user, err
+	}
+
+	if user.ID == 0 {
+		return user, errorHandling.ErrUserNotFound
+	}
+	return user, nil
+}
+
+func (u *UserUseCase) AllSocialMedia() ([]domain.SocialMedia, error) {
+	return u.repoUser.AllSocialMedia()
+}

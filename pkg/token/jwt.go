@@ -14,7 +14,7 @@ func GenerateToken(userID int) (string, error) {
 	// Claims is a set of key/value pairs that are stored in a JWT.
 	claims["authorized"] = true
 	claims["user_id"] = userID
-	claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
+	claims["exp"] = time.Now().Add(time.Minute * 30).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 

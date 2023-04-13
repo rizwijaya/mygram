@@ -9,6 +9,8 @@ import (
 type RepositoryPresenter interface {
 	SaveUsers(user domain.User) (domain.User, error)
 	FindUser(field string, value string) (domain.User, error)
+	FindUserByID(id int) (domain.User, error)
+	AllSocialMedia() ([]domain.SocialMedia, error)
 }
 
 type Repository struct {
