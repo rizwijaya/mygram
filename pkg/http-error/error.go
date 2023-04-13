@@ -1,6 +1,9 @@
 package errorsHandling
 
 import (
+	api "mygram/pkg/api_response"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
@@ -9,15 +12,17 @@ func IsSame(err error, target error) bool {
 	return err.Error() == target.Error()
 }
 
-func PageNotFound() gin.HandlerFunc {
+func NotFound() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.HTML(404, "error_404.html", nil)
+		resp := api.APIResponse("error", http.StatusNotFound, "Not Found", nil)
+		c.JSON(http.StatusNotFound, resp)
 	}
 }
 
 func NoMethod() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(440, gin.H{"status": "error 440", "message": "Method Not Allowed"})
+		resp := api.APIResponse("error", http.StatusMethodNotAllowed, "Method Not Allowed", nil)
+		c.JSON(http.StatusMethodNotAllowed, resp)
 	}
 }
 
