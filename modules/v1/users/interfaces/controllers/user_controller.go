@@ -158,3 +158,49 @@ func (uc *UserController) GetOneSocialMedia(c *gin.Context) {
 	resp := api.APIResponse("Get Social Media Success", http.StatusOK, "success", media)
 	c.JSON(http.StatusOK, resp)
 }
+
+func (uc *UserController) CreateSocialMedia(c *gin.Context) {
+	var input domain.InsertSocialMedia
+	if err := c.ShouldBindJSON(&input); err != nil {
+		log.Println(err)
+		var verification validator.ValidationErrors
+		if errors.As(err, &verification) {
+			result := make([]error.Form, len(verification))
+			for i, val := range verification {
+				result[i] = error.Form{
+					Field:   val.Field(),
+					Message: error.FormValidationError(val),
+				}
+			}
+			resp := api.APIResponse("Create Social Media Failed", http.StatusBadRequest, "error", result)
+			c.JSON(http.StatusBadRequest, resp)
+			return
+		}
+		errorMessage := api.SetError(err.Error())
+		resp := api.APIResponse("Create Social Media Failed", http.StatusBadRequest, "error", errorMessage)
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	currentUser := c.MustGet("currentUser").(domain.User)
+	//Check User memiliki social media atau tidak
+	err := uc.UserUseCase.CheckSocialMedia(currentUser.ID)
+	if err != nil {
+		if error.IsSame(err, error.ErrSocialMediaAlreadyExist) {
+			errorMessage := api.SetError("User Already Have Social Media")
+			resp := api.APIResponse("Register Account Failed", http.StatusBadRequest, "error", errorMessage)
+			c.JSON(http.StatusBadRequest, resp)
+			return
+		}
+	}
+
+	socialmedia, err := uc.UserUseCase.CreateSocialMedia(input, currentUser.ID)
+	if err != nil {
+		log.Println(err)
+		resp := api.APIResponse("Create Social Media Failed", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	resp := api.APIResponse("Create Social Media Success", http.StatusOK, "success", socialmedia)
+	c.JSON(http.StatusOK, resp)
+}

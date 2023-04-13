@@ -24,6 +24,7 @@ func NewRouter(router *gin.Engine, db *gorm.DB) *gin.Engine {
 	{
 		social.GET("", userControllerV1.GetAllSocialMedia)
 		social.GET("/:id", userControllerV1.GetOneSocialMedia)
+		social.POST("", userControllerV1.CreateSocialMedia)
 	}
 	return router
 }

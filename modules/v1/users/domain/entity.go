@@ -34,3 +34,10 @@ type UserSocialMedia struct {
 func (UserSocialMedia) TableName() string {
 	return "users"
 }
+
+type CreatedSocialMedia struct {
+	GormModel
+	Name             string `json:"name" gorm:"column:name"`
+	Social_media_url string `json:"social_media_url" gorm:"column:social_media_url"`
+	UserID           int    `json:"-" gorm:"column:user_id"`
+}

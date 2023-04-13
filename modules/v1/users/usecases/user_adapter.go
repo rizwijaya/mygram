@@ -11,6 +11,8 @@ type UserAdapter interface {
 	GetUserByID(id int) (domain.User, error)
 	AllSocialMedia() ([]domain.SocialMedia, error)
 	OneSocialMedia(id string) (domain.SocialMedia, error)
+	CreateSocialMedia(input domain.InsertSocialMedia, id int) (domain.CreatedSocialMedia, error)
+	CheckSocialMedia(id int) error
 }
 
 type UserUseCase struct {

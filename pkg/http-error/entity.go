@@ -3,12 +3,14 @@ package errorsHandling
 import "errors"
 
 var (
-	ErrEmailAlreadyExist    = errors.New("ERROR: duplicate key value violates unique constraint \"users_email_key\" (SQLSTATE 23505)")
-	ErrUsernameAlreadyExist = errors.New("ERROR: duplicate key value violates unique constraint \"users_username_key\" (SQLSTATE 23505)")
-	ErrDataNotFound         = errors.New("record not found")
-	ErrEmailNotFound        = errors.New("email not found")
-	ErrUsernameNotFound     = errors.New("username not found")
-	ErrUserNotFound         = errors.New("No user found on with that ID")
+	ErrEmailAlreadyExist       = errors.New("ERROR: duplicate key value violates unique constraint \"users_email_key\" (SQLSTATE 23505)")
+	ErrUsernameAlreadyExist    = errors.New("ERROR: duplicate key value violates unique constraint \"users_username_key\" (SQLSTATE 23505)")
+	ErrDataNotFound            = errors.New("record not found")
+	ErrEmailNotFound           = errors.New("email not found")
+	ErrUsernameNotFound        = errors.New("username not found")
+	ErrUserNotFound            = errors.New("no user found on with that id")
+	ErrUserAlreadyExist        = errors.New("user already exist")
+	ErrSocialMediaAlreadyExist = errors.New("social media already exist")
 )
 
 type Form struct {

@@ -81,3 +81,36 @@ func (u *UserUseCase) AllSocialMedia() ([]domain.SocialMedia, error) {
 func (u *UserUseCase) OneSocialMedia(id string) (domain.SocialMedia, error) {
 	return u.repoUser.FindSocialMediaByID(id)
 }
+
+func (u *UserUseCase) CreateSocialMedia(input domain.InsertSocialMedia, id int) (domain.CreatedSocialMedia, error) {
+	socialMedia := domain.SocialMedia{
+		Name:             input.Name,
+		Social_media_url: input.Social_media_url,
+		UserID:           id,
+	}
+	newSocialMedia := domain.CreatedSocialMedia{}
+	socialMedia, err := u.repoUser.SaveSocialMedia(socialMedia)
+	if err != nil {
+		return newSocialMedia, err
+	}
+
+	newSocialMedia.ID = socialMedia.ID
+	newSocialMedia.Name = socialMedia.Name
+	newSocialMedia.Social_media_url = socialMedia.Social_media_url
+	newSocialMedia.UserID = socialMedia.UserID
+	newSocialMedia.UpdatedAt = socialMedia.UpdatedAt
+	newSocialMedia.CreatedAt = socialMedia.CreatedAt
+
+	return newSocialMedia, nil
+}
+
+func (u *UserUseCase) CheckSocialMedia(id int) error {
+	user, err := u.repoUser.FindSocialMediaByUserID(id)
+	if err != nil {
+		return err
+	}
+	if user.ID != 0 {
+		return errorHandling.ErrSocialMediaAlreadyExist
+	}
+	return nil
+}

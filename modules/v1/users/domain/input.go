@@ -13,3 +13,8 @@ type LoginUserInput struct {
 	Username string `json:"username" binding:"required_without=Email"`
 	Password string `json:"password" binding:"required"`
 }
+
+type InsertSocialMedia struct {
+	Name             string `json:"name" binding:"required"`
+	Social_media_url string `json:"social_media_url" binding:"required,url"`
+}

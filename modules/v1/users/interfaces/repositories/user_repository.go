@@ -30,3 +30,14 @@ func (r *Repository) FindSocialMediaByID(id string) (domain.SocialMedia, error) 
 	err := r.db.Preload("User").Where("id = ?", id).First(&socialMedia).Error
 	return socialMedia, err
 }
+
+func (r *Repository) SaveSocialMedia(socialMedia domain.SocialMedia) (domain.SocialMedia, error) {
+	err := r.db.Create(&socialMedia).Error
+	return socialMedia, err
+}
+
+func (r *Repository) FindSocialMediaByUserID(id int) (domain.SocialMedia, error) {
+	var socialMedia domain.SocialMedia
+	err := r.db.Preload("User").Where("user_id = ?", id).First(&socialMedia).Error
+	return socialMedia, err
+}
