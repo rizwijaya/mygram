@@ -41,6 +41,8 @@ func FormValidationError(fe validator.FieldError) string {
 		return fe.Field() + " must be alphanumeric unicode!"
 	case "required_without":
 		return fe.Field() + " is required because " + fe.Param() + " is empty!"
+	case "url":
+		return fe.Field() + " must be a valid URL with https or http!"
 	default:
 		return fe.Field() + " is invalid!"
 	}

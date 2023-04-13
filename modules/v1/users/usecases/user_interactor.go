@@ -3,8 +3,10 @@ package usecases
 import (
 	"fmt"
 	"mygram/modules/v1/users/domain"
+	"strconv"
 
 	errorHandling "mygram/pkg/http-error"
+	"mygram/pkg/times"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -113,4 +115,43 @@ func (u *UserUseCase) CheckSocialMedia(id int) error {
 		return errorHandling.ErrSocialMediaAlreadyExist
 	}
 	return nil
+}
+
+func (u *UserUseCase) UpdateSocialMedia(input domain.UpdateSocialMedia, id_sosmed string, id_user int) (domain.CreatedSocialMedia, error) {
+	var (
+		now            = times.Now("Asia/Jakarta")
+		newSocialMedia = domain.CreatedSocialMedia{}
+		socialMedia    = domain.SocialMedia{}
+	)
+
+	id_sos, err := strconv.Atoi(id_sosmed)
+	if err != nil {
+		return domain.CreatedSocialMedia{}, err
+	}
+
+	socialMedia_user, err := u.repoUser.FindSocialMediaByUserID(id_user)
+	if err != nil {
+		return newSocialMedia, err
+	}
+	//Not Permitted Because Social Media doesn't belong to user
+	if socialMedia_user.ID != id_sos {
+		return newSocialMedia, errorHandling.ErrSocialMediaNotFound
+	}
+
+	socialMedia.Name = input.Name
+	socialMedia.Social_media_url = input.Social_media_url
+	socialMedia.UpdatedAt = &now
+	socialMedia, err = u.repoUser.UpdateSocialMedia(socialMedia, id_sos)
+	if err != nil {
+		return newSocialMedia, err
+	}
+
+	newSocialMedia.ID = socialMedia.ID
+	newSocialMedia.Name = socialMedia.Name
+	newSocialMedia.Social_media_url = socialMedia.Social_media_url
+	newSocialMedia.UserID = socialMedia.UserID
+	newSocialMedia.UpdatedAt = socialMedia.UpdatedAt
+	newSocialMedia.CreatedAt = socialMedia.CreatedAt
+
+	return newSocialMedia, nil
 }

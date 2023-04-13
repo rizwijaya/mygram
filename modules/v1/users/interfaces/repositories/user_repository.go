@@ -1,6 +1,10 @@
 package repository
 
-import "mygram/modules/v1/users/domain"
+import (
+	"mygram/modules/v1/users/domain"
+
+	"gorm.io/gorm/clause"
+)
 
 func (r *Repository) Save(user domain.User) (domain.User, error) {
 	err := r.db.Create(&user).Error
@@ -39,5 +43,10 @@ func (r *Repository) SaveSocialMedia(socialMedia domain.SocialMedia) (domain.Soc
 func (r *Repository) FindSocialMediaByUserID(id int) (domain.SocialMedia, error) {
 	var socialMedia domain.SocialMedia
 	err := r.db.Preload("User").Where("user_id = ?", id).First(&socialMedia).Error
+	return socialMedia, err
+}
+
+func (r *Repository) UpdateSocialMedia(socialMedia domain.SocialMedia, id int) (domain.SocialMedia, error) {
+	err := r.db.Model(&socialMedia).Clauses(clause.Returning{}).Where("id = ?", id).Updates(socialMedia).Error
 	return socialMedia, err
 }

@@ -14,6 +14,7 @@ type RepositoryPresenter interface {
 	FindSocialMediaByID(id string) (domain.SocialMedia, error)
 	SaveSocailMedia(socialMedia domain.SocialMedia) (domain.SocialMedia, error)
 	FindSocialMediaByUserID(id int) (domain.SocialMedia, error)
+	UpdateSocialMedia(socialMedia domain.SocialMedia, id int) (domain.SocialMedia, error)
 }
 
 type Repository struct {

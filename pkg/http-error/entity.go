@@ -11,6 +11,7 @@ var (
 	ErrUserNotFound            = errors.New("no user found on with that id")
 	ErrUserAlreadyExist        = errors.New("user already exist")
 	ErrSocialMediaAlreadyExist = errors.New("social media already exist")
+	ErrSocialMediaNotFound     = errors.New("social media not found")
 )
 
 type Form struct {

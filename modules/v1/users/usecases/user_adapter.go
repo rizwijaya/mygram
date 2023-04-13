@@ -13,6 +13,7 @@ type UserAdapter interface {
 	OneSocialMedia(id string) (domain.SocialMedia, error)
 	CreateSocialMedia(input domain.InsertSocialMedia, id int) (domain.CreatedSocialMedia, error)
 	CheckSocialMedia(id int) error
+	UpdateSocialMedia(input domain.UpdateSocialMedia, id_sosmed string, id_user int) (domain.CreatedSocialMedia, error)
 }
 
 type UserUseCase struct {

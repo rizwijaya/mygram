@@ -18,3 +18,8 @@ type InsertSocialMedia struct {
 	Name             string `json:"name" binding:"required"`
 	Social_media_url string `json:"social_media_url" binding:"required,url"`
 }
+
+type UpdateSocialMedia struct {
+	Name             string `json:"name"`
+	Social_media_url string `json:"social_media_url" binding:"omitempty,url"`
+}

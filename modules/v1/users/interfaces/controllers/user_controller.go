@@ -183,7 +183,6 @@ func (uc *UserController) CreateSocialMedia(c *gin.Context) {
 	}
 
 	currentUser := c.MustGet("currentUser").(domain.User)
-	//Check User memiliki social media atau tidak
 	err := uc.UserUseCase.CheckSocialMedia(currentUser.ID)
 	if err != nil {
 		if error.IsSame(err, error.ErrSocialMediaAlreadyExist) {
@@ -202,5 +201,55 @@ func (uc *UserController) CreateSocialMedia(c *gin.Context) {
 		return
 	}
 	resp := api.APIResponse("Create Social Media Success", http.StatusOK, "success", socialmedia)
+	c.JSON(http.StatusOK, resp)
+}
+
+func (uc *UserController) UpdateSocialMedia(c *gin.Context) {
+	id := c.Param("id")
+	var input domain.UpdateSocialMedia
+	if err := c.ShouldBindJSON(&input); err != nil {
+		log.Println(err)
+		var verification validator.ValidationErrors
+		if errors.As(err, &verification) {
+			result := make([]error.Form, len(verification))
+			for i, val := range verification {
+				result[i] = error.Form{
+					Field:   val.Field(),
+					Message: error.FormValidationError(val),
+				}
+			}
+			resp := api.APIResponse("Update Social Media Failed", http.StatusBadRequest, "error", result)
+			c.JSON(http.StatusBadRequest, resp)
+			return
+		}
+		errorMessage := api.SetError(err.Error())
+		resp := api.APIResponse("Update Social Media Failed", http.StatusBadRequest, "error", errorMessage)
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	if input.Name == "" && input.Social_media_url == "" {
+		errorMessage := api.SetError("Name and Social Media Url Cannot Be Empty")
+		resp := api.APIResponse("Update Social Media Failed", http.StatusBadRequest, "error", errorMessage)
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	currentUser := c.MustGet("currentUser").(domain.User)
+	socialmedia, err := uc.UserUseCase.UpdateSocialMedia(input, id, currentUser.ID)
+	if err != nil {
+		log.Println(err)
+		if error.IsSame(err, error.ErrSocialMediaNotFound) {
+			errorMessage := api.SetError("Social Media Not Found")
+			resp := api.APIResponse("Update Social Media Failed", http.StatusNotFound, "error", errorMessage)
+			c.JSON(http.StatusNotFound, resp)
+			return
+		}
+		resp := api.APIResponse("Update Social Media Failed", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	resp := api.APIResponse("Update Social Media Success", http.StatusOK, "success", socialmedia)
 	c.JSON(http.StatusOK, resp)
 }
