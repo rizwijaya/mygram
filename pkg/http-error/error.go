@@ -1,14 +1,9 @@
-package error
+package errorsHandling
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
-
-type Form struct {
-	Field   string
-	Message string
-}
 
 func PageNotFound() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -29,9 +24,9 @@ func FormValidationError(fe validator.FieldError) string {
 	case "email":
 		return fe.Field() + " must be a valid email address!"
 	case "min":
-		return fe.Field() + " minimum " + fe.Param() + " characters!"
+		return fe.Field() + " minimum " + fe.Param()
 	case "max":
-		return fe.Field() + " maximum " + fe.Param() + " characters!"
+		return fe.Field() + " maximum " + fe.Param()
 	case "alphanum":
 		return fe.Field() + " must be alphanumeric!"
 	case "numeric":
