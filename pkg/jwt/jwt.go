@@ -1,0 +1,21 @@
+package jwt
+
+import (
+	"mygram/infrastructures/config"
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
+)
+
+func GenerateToken(userID int) (string, error) {
+	config := config.New()
+	claims := jwt.MapClaims{}
+	// Claims is a set of key/value pairs that are stored in a JWT.
+	claims["authorized"] = true
+	claims["user_id"] = userID
+	claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	return token.SignedString([]byte(config.App.Secret_key))
+}
