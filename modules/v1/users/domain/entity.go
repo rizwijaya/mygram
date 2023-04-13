@@ -18,8 +18,19 @@ type User struct {
 
 type SocialMedia struct {
 	GormModel
-	Name             string `json:"name" gorm:"column:name"`
-	Social_media_url string `json:"social_media_url" gorm:"column:social_media_url"`
-	UserID           int    `json:"-" gorm:"column:user_id"`
-	User             *User  `json:"user"`
+	Name             string           `json:"name" gorm:"column:name"`
+	Social_media_url string           `json:"social_media_url" gorm:"column:social_media_url"`
+	UserID           int              `json:"-" gorm:"column:user_id"`
+	User             *UserSocialMedia `json:"user"`
+}
+
+type UserSocialMedia struct {
+	GormModelID int    `json:"id" gorm:"column:id"`
+	UserName    string `json:"username" gorm:"column:username"`
+	Email       string `json:"email" gorm:"column:email"`
+	Age         int    `json:"age" gorm:"column:age"`
+}
+
+func (UserSocialMedia) TableName() string {
+	return "users"
 }

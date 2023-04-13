@@ -124,7 +124,7 @@ func (uc *UserController) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-func (uc *UserController) GetSocialMedia(c *gin.Context) {
+func (uc *UserController) GetAllSocialMedia(c *gin.Context) {
 	media, err := uc.UserUseCase.AllSocialMedia()
 	if err != nil {
 		log.Println(err)
