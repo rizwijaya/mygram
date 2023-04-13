@@ -8,6 +8,7 @@ var (
 	ErrDataNotFound         = errors.New("record not found")
 	ErrEmailNotFound        = errors.New("email not found")
 	ErrUsernameNotFound     = errors.New("username not found")
+	ErrUserNotFound         = errors.New("No user found on with that ID")
 )
 
 type Form struct {
