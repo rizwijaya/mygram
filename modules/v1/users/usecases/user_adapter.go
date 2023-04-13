@@ -1,10 +1,12 @@
 package usecases
 
 import (
+	"mygram/modules/v1/users/domain"
 	userRepository "mygram/modules/v1/users/interfaces/repositories"
 )
 
 type UserAdapter interface {
+	RegisterUser(input domain.RegisterUserInput) (domain.User, error)
 }
 
 type UserUseCase struct {
