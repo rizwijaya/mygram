@@ -133,7 +133,7 @@ func (uc *UserController) GetAllSocialMedia(c *gin.Context) {
 		return
 	}
 	if len(media) == 0 {
-		resp := api.APIResponse("Social Media Not Found!", http.StatusOK, "success", nil)
+		resp := api.APIResponse("Social Media Not Found", http.StatusOK, "success", nil)
 		c.JSON(http.StatusOK, resp)
 		return
 	}
@@ -147,7 +147,8 @@ func (uc *UserController) GetOneSocialMedia(c *gin.Context) {
 	if err != nil {
 		log.Println(err)
 		if error.IsSame(err, error.ErrDataNotFound) {
-			resp := api.APIResponse("Social Media Not Found!", http.StatusNotFound, "Not Found", nil)
+			errMessage := api.SetError("Social Media Not Found!")
+			resp := api.APIResponse("Get Social Media Failed", http.StatusNotFound, "error", errMessage)
 			c.JSON(http.StatusNotFound, resp)
 			return
 		}
@@ -240,7 +241,7 @@ func (uc *UserController) UpdateSocialMedia(c *gin.Context) {
 	if err != nil {
 		log.Println(err)
 		if error.IsSame(err, error.ErrSocialMediaNotFound) {
-			errorMessage := api.SetError("Social Media Not Found")
+			errorMessage := api.SetError("Social Media Not Found!")
 			resp := api.APIResponse("Update Social Media Failed", http.StatusNotFound, "error", errorMessage)
 			c.JSON(http.StatusNotFound, resp)
 			return
@@ -251,5 +252,25 @@ func (uc *UserController) UpdateSocialMedia(c *gin.Context) {
 	}
 
 	resp := api.APIResponse("Update Social Media Success", http.StatusOK, "success", socialmedia)
+	c.JSON(http.StatusOK, resp)
+}
+
+func (uc *UserController) DeleteSocialMedia(c *gin.Context) {
+	id := c.Param("id")
+	currentUser := c.MustGet("currentUser").(domain.User)
+	err := uc.UserUseCase.DeleteSocialMedia(id, currentUser.ID)
+	if err != nil {
+		log.Println(err)
+		if error.IsSame(err, error.ErrSocialMediaNotFound) {
+			errorMessage := api.SetError("Social Media Not Found!")
+			resp := api.APIResponse("Delete Social Media Failed", http.StatusNotFound, "error", errorMessage)
+			c.JSON(http.StatusNotFound, resp)
+			return
+		}
+		resp := api.APIResponse("Delete Social Media Failed", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	resp := api.APIResponse("Delete Social Media Success", http.StatusOK, "success", nil)
 	c.JSON(http.StatusOK, resp)
 }

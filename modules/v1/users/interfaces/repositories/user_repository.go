@@ -50,3 +50,7 @@ func (r *Repository) UpdateSocialMedia(socialMedia domain.SocialMedia, id int) (
 	err := r.db.Model(&socialMedia).Clauses(clause.Returning{}).Where("id = ?", id).Updates(socialMedia).Error
 	return socialMedia, err
 }
+
+func (r *Repository) DeleteSocialMedia(id int) error {
+	return r.db.Delete(&domain.SocialMedia{}, id).Error
+}

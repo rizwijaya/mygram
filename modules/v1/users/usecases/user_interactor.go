@@ -155,3 +155,26 @@ func (u *UserUseCase) UpdateSocialMedia(input domain.UpdateSocialMedia, id_sosme
 
 	return newSocialMedia, nil
 }
+
+func (u *UserUseCase) DeleteSocialMedia(id_sosmed string, id_user int) error {
+	id_sos, err := strconv.Atoi(id_sosmed)
+	if err != nil {
+		return err
+	}
+
+	socialMedia_user, err := u.repoUser.FindSocialMediaByUserID(id_user)
+	if err != nil {
+		return err
+	}
+	//Not Permitted Because Social Media doesn't belong to user
+	if socialMedia_user.ID != id_sos {
+		return errorHandling.ErrSocialMediaNotFound
+	}
+
+	err = u.repoUser.DeleteSocialMedia(id_sos)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
