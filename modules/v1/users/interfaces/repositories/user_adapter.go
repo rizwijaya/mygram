@@ -8,7 +8,7 @@ import (
 
 type RepositoryPresenter interface {
 	SaveUsers(user domain.User) (domain.User, error)
-	//FindUser(field string, value string) (domain.User, error)
+	FindUser(field string, value string) (domain.User, error)
 }
 
 type Repository struct {

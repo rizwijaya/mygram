@@ -9,9 +9,11 @@ import (
 
 func NewRouter(router *gin.Engine, db *gorm.DB) *gin.Engine {
 	userControllerV1 := userControllerV1.NewUserController(db)
-	users := router.Group("")
+	api := router.Group("/api/v1")
+	users := api.Group("/users")
 	{
 		users.POST("/register", userControllerV1.Register)
+		users.POST("/login", userControllerV1.Login)
 	}
 
 	// //Social media

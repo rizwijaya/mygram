@@ -5,6 +5,10 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+func IsSame(err error, target error) bool {
+	return err.Error() == target.Error()
+}
+
 func PageNotFound() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(404, "error_404.html", nil)
@@ -35,6 +39,8 @@ func FormValidationError(fe validator.FieldError) string {
 		return fe.Field() + " must be equal to " + fe.Param() + "!"
 	case "alphanumunicode":
 		return fe.Field() + " must be alphanumeric unicode!"
+	case "required_without":
+		return fe.Field() + " is required because " + fe.Param() + " is empty!"
 	default:
 		return fe.Field() + " is invalid!"
 	}

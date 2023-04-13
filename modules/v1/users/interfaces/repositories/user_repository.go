@@ -7,8 +7,8 @@ func (r *Repository) Save(user domain.User) (domain.User, error) {
 	return user, err
 }
 
-// func (r *Repository) FindUser(field string, value string) (domain.User, error) {
-// 	var user domain.User
-// 	err := r.db.Where(field+" = ?", value).First(&user).Error
-// 	return user, err
-// }
+func (r *Repository) FindUser(field string, value string) (domain.User, error) {
+	var user domain.User
+	err := r.db.Where(field+" = ?", value).First(&user).Error
+	return user, err
+}

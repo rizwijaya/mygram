@@ -1,6 +1,14 @@
 package api
 
-import "mygram/modules/v1/users/domain"
+import (
+	"mygram/modules/v1/users/domain"
+
+	"github.com/gin-gonic/gin"
+)
+
+func SetError(err string) map[string]any {
+	return gin.H{"errors": err}
+}
 
 func SetMessage(message string) Message {
 	return Message{"message": message}
