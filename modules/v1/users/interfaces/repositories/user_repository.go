@@ -24,3 +24,9 @@ func (r *Repository) AllSocialMedia() ([]domain.SocialMedia, error) {
 	err := r.db.Preload("User").Find(&socialMedia).Error
 	return socialMedia, err
 }
+
+func (r *Repository) FindSocialMediaByID(id string) (domain.SocialMedia, error) {
+	var socialMedia domain.SocialMedia
+	err := r.db.Preload("User").Where("id = ?", id).First(&socialMedia).Error
+	return socialMedia, err
+}

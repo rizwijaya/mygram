@@ -77,3 +77,7 @@ func (u *UserUseCase) GetUserByID(id int) (domain.User, error) {
 func (u *UserUseCase) AllSocialMedia() ([]domain.SocialMedia, error) {
 	return u.repoUser.AllSocialMedia()
 }
+
+func (u *UserUseCase) OneSocialMedia(id string) (domain.SocialMedia, error) {
+	return u.repoUser.FindSocialMediaByID(id)
+}

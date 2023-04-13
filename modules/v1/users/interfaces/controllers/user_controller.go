@@ -140,3 +140,21 @@ func (uc *UserController) GetAllSocialMedia(c *gin.Context) {
 	resp := api.APIResponse("Get Social Media Success", http.StatusOK, "success", media)
 	c.JSON(http.StatusOK, resp)
 }
+
+func (uc *UserController) GetOneSocialMedia(c *gin.Context) {
+	id := c.Param("id")
+	media, err := uc.UserUseCase.OneSocialMedia(id)
+	if err != nil {
+		log.Println(err)
+		if error.IsSame(err, error.ErrDataNotFound) {
+			resp := api.APIResponse("Social Media Not Found!", http.StatusNotFound, "Not Found", nil)
+			c.JSON(http.StatusNotFound, resp)
+			return
+		}
+		resp := api.APIResponse("Get Social Media Failed", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	resp := api.APIResponse("Get Social Media Success", http.StatusOK, "success", media)
+	c.JSON(http.StatusOK, resp)
+}

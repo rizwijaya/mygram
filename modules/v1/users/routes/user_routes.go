@@ -23,6 +23,7 @@ func NewRouter(router *gin.Engine, db *gorm.DB) *gin.Engine {
 	social := api.Group("/media", mid.Auth())
 	{
 		social.GET("", userControllerV1.GetAllSocialMedia)
+		social.GET("/:id", userControllerV1.GetOneSocialMedia)
 	}
 	return router
 }

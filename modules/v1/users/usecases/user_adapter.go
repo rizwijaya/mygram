@@ -10,6 +10,7 @@ type UserAdapter interface {
 	LoginUser(input domain.LoginUserInput) (domain.User, error)
 	GetUserByID(id int) (domain.User, error)
 	AllSocialMedia() ([]domain.SocialMedia, error)
+	OneSocialMedia(id string) (domain.SocialMedia, error)
 }
 
 type UserUseCase struct {
