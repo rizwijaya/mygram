@@ -12,3 +12,11 @@ type Meta struct {
 }
 
 type Message map[string]any
+
+type UserResponse struct {
+	ID       int    `json:"id"`
+	UserName string `json:"username"`
+	Email    string `json:"email"`
+	Age      int    `json:"age"`
+	Token    string `json:"token"`
+}
