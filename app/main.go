@@ -3,7 +3,7 @@ package main
 import (
 	"mygram/infrastructures/config"
 	database "mygram/infrastructures/databases"
-	routesCommentsV1 "mygram/modules/v1/users/routes"
+	routesCommentsV1 "mygram/modules/v1/comments/routes"
 	routesUsersV1 "mygram/modules/v1/users/routes"
 	error "mygram/pkg/http-error"
 
