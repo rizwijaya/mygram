@@ -171,10 +171,5 @@ func (u *UserUseCase) DeleteSocialMedia(id_sosmed string, id_user int) error {
 		return errorHandling.ErrSocialMediaNotFound
 	}
 
-	err = u.repoUser.DeleteSocialMedia(id_sos)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return u.repoUser.DeleteSocialMedia(id_sos)
 }

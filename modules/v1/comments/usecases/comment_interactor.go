@@ -69,11 +69,7 @@ func (cu *CommentUseCase) UpdateComment(idComments string, input domain.UpdateCo
 		return domain.Comment{}, err
 	}
 
-	if comment.ID == 0 {
-		return domain.Comment{}, errorHandling.ErrCommentNotFound
-	}
-
-	if comment.UserID != idUser {
+	if comment.ID == 0 || comment.UserID != idUser {
 		return domain.Comment{}, errorHandling.ErrCommentNotFound
 	}
 
@@ -83,4 +79,21 @@ func (cu *CommentUseCase) UpdateComment(idComments string, input domain.UpdateCo
 	}
 
 	return cu.repoComment.UpdateComment(updateComment, idComments)
+}
+
+func (cu *CommentUseCase) DeleteComment(idComment string, idUser int) error {
+	//Check Comment Exist
+	comment, err := cu.repoComment.FindCommentById(idComment)
+	if err != nil {
+		if errorHandling.IsSame(err, errorHandling.ErrDataNotFound) {
+			return errorHandling.ErrCommentNotFound
+		}
+		return err
+	}
+
+	if comment.ID == 0 || comment.UserID != idUser {
+		return errorHandling.ErrCommentNotFound
+	}
+
+	return cu.repoComment.DeleteComment(idComment)
 }

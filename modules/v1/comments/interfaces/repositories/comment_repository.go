@@ -28,6 +28,10 @@ func (r *Repository) UpdateComment(comment domain.Comment, id string) (domain.Co
 	return comment, err
 }
 
+func (r *Repository) DeleteComment(id string) error {
+	return r.db.Where("id = ?", id).Delete(&domain.Comment{}).Error
+}
+
 func (r *Repository) FindPhotoById(id int) (domain.Photo, error) {
 	var photo domain.Photo
 	err := r.db.Preload("User").Preload("Comments").Where("id = ?", id).First(&photo).Error

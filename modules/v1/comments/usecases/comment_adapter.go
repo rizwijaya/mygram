@@ -10,6 +10,7 @@ type CommentAdapter interface {
 	GetCommentById(id string) (domain.Comment, error)
 	CreateComment(input domain.InsertComment) (domain.Comment, error)
 	UpdateComment(idComments string, input domain.UpdateComment, idUser int) (domain.Comment, error)
+	DeleteComment(idComment string, idUser int) error
 }
 
 type CommentUseCase struct {

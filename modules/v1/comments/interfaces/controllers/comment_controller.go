@@ -148,3 +148,23 @@ func (cc *CommentController) UpdateComment(c *gin.Context) {
 	resp := api.APIResponse("Update Comment Success", http.StatusOK, "success", comment)
 	c.JSON(http.StatusOK, resp)
 }
+
+func (cc *CommentController) DeleteComment(c *gin.Context) {
+	id := c.Param("id")
+	user := c.MustGet("currentUser").(domainUser.User)
+	err := cc.CommentUseCase.DeleteComment(id, user.ID)
+	if err != nil {
+		log.Println(err)
+		if error.IsSame(err, error.ErrCommentNotFound) {
+			errMessage := api.SetError("Comment Not Found!")
+			resp := api.APIResponse("Delete Comment Failed", http.StatusNotFound, "error", errMessage)
+			c.JSON(http.StatusNotFound, resp)
+			return
+		}
+		resp := api.APIResponse("Delete Comment Failed", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	resp := api.APIResponse("Delete Comment Success", http.StatusOK, "success", nil)
+	c.JSON(http.StatusOK, resp)
+}

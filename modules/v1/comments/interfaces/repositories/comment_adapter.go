@@ -11,6 +11,7 @@ type RepositoryPresenter interface {
 	FindCommentById(id string) (domain.Comment, error)
 	SaveComment(comment domain.Comment) (domain.Comment, error)
 	UpdateComment(comment domain.Comment, id string) (domain.Comment, error)
+	DeleteComment(id string) error
 	FindPhotoById(id int) (domain.Photo, error)
 }
 
