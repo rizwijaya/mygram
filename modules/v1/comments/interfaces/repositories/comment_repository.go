@@ -32,8 +32,20 @@ func (r *Repository) DeleteComment(id string) error {
 	return r.db.Where("id = ?", id).Delete(&domain.Comment{}).Error
 }
 
+func (r *Repository) FindAllPhoto() ([]domain.Photo, error) {
+	var photos []domain.Photo
+	err := r.db.Preload("User").Preload("Comments").Find(&photos).Error
+	return photos, err
+}
+
 func (r *Repository) FindPhotoById(id int) (domain.Photo, error) {
 	var photo domain.Photo
 	err := r.db.Preload("User").Preload("Comments").Where("id = ?", id).First(&photo).Error
+	return photo, err
+}
+
+func (r *Repository) FindPhoto(idPhotos string, idUser int) (domain.Photo, error) {
+	var photo domain.Photo
+	err := r.db.Preload("User").Preload("Comments").Where("id = ? AND user_id = ?", idPhotos, idUser).First(&photo).Error
 	return photo, err
 }

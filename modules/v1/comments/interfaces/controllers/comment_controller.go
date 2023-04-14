@@ -168,3 +168,41 @@ func (cc *CommentController) DeleteComment(c *gin.Context) {
 	resp := api.APIResponse("Delete Comment Success", http.StatusOK, "success", nil)
 	c.JSON(http.StatusOK, resp)
 }
+
+func (cc *CommentController) GetAllPhotos(c *gin.Context) {
+	photos, err := cc.CommentUseCase.GetAllPhotos()
+	if err != nil {
+		log.Println(err)
+		if error.IsSame(err, error.ErrPhotoNotFound) {
+			errMessage := api.SetError("Photo Not Found!")
+			resp := api.APIResponse("Get All Photos Failed", http.StatusNotFound, "error", errMessage)
+			c.JSON(http.StatusNotFound, resp)
+			return
+		}
+		resp := api.APIResponse("Get All Photos Failed", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	resp := api.APIResponse("Get All Photos Success", http.StatusOK, "success", photos)
+	c.JSON(http.StatusOK, resp)
+}
+
+func (cc *CommentController) GetPhotoById(c *gin.Context) {
+	id := c.Param("id")
+	user := c.MustGet("currentUser").(domainUser.User)
+	photo, err := cc.CommentUseCase.GetPhotoById(id, user.ID)
+	if err != nil {
+		log.Println(err)
+		if error.IsSame(err, error.ErrPhotoNotFound) {
+			errMessage := api.SetError("Photo Not Found!")
+			resp := api.APIResponse("Get Photo By ID Failed", http.StatusNotFound, "error", errMessage)
+			c.JSON(http.StatusNotFound, resp)
+			return
+		}
+		resp := api.APIResponse("Get Photo By ID Failed", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	resp := api.APIResponse("Get Photo By ID Success", http.StatusOK, "success", photo)
+	c.JSON(http.StatusOK, resp)
+}

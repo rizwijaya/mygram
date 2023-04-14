@@ -22,6 +22,12 @@ func NewRouter(router *gin.Engine, db *gorm.DB) *gin.Engine {
 			comments.PUT("/:id", commentControllerV1.UpdateComment)
 			comments.DELETE("/:id", commentControllerV1.DeleteComment)
 		}
+
+		photos := api.Group("/photos")
+		{
+			photos.GET("", commentControllerV1.GetAllPhotos)
+			photos.GET("/:id", commentControllerV1.GetPhotoById)
+		}
 	}
 	return router
 }

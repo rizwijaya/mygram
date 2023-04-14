@@ -97,3 +97,35 @@ func (cu *CommentUseCase) DeleteComment(idComment string, idUser int) error {
 
 	return cu.repoComment.DeleteComment(idComment)
 }
+
+func (cu *CommentUseCase) GetAllPhotos() ([]domain.Photo, error) {
+	photo, err := cu.repoComment.FindAllPhoto()
+	if err != nil {
+		if errorHandling.IsSame(err, errorHandling.ErrDataNotFound) {
+			return nil, errorHandling.ErrDataNotFound
+		}
+		return nil, err
+	}
+
+	if len(photo) == 0 {
+		return nil, errorHandling.ErrDataNotFound
+	}
+
+	return photo, nil
+}
+
+func (cu *CommentUseCase) GetPhotoById(idPhotos string, idUser int) (domain.Photo, error) {
+	photo, err := cu.repoComment.FindPhoto(idPhotos, idUser)
+	if err != nil {
+		if errorHandling.IsSame(err, errorHandling.ErrDataNotFound) {
+			return domain.Photo{}, errorHandling.ErrPhotoNotFound
+		}
+		return domain.Photo{}, err
+	}
+
+	if photo.ID == 0 {
+		return domain.Photo{}, errorHandling.ErrPhotoNotFound
+	}
+
+	return photo, nil
+}

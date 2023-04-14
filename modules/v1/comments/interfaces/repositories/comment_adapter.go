@@ -12,7 +12,9 @@ type RepositoryPresenter interface {
 	SaveComment(comment domain.Comment) (domain.Comment, error)
 	UpdateComment(comment domain.Comment, id string) (domain.Comment, error)
 	DeleteComment(id string) error
+	FindAllPhoto() ([]domain.Photo, error)
 	FindPhotoById(id int) (domain.Photo, error)
+	FindPhoto(idPhotos string, idUser int) (domain.Photo, error)
 }
 
 type Repository struct {
