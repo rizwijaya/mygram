@@ -93,3 +93,58 @@ func (cc *CommentController) CreateComment(c *gin.Context) {
 	resp := api.APIResponse("Create Comment Success", http.StatusOK, "success", comment)
 	c.JSON(http.StatusOK, resp)
 }
+
+func (cc *CommentController) UpdateComment(c *gin.Context) {
+	id := c.Param("id")
+	var input domain.UpdateComment
+	if err := c.ShouldBindJSON(&input); err != nil {
+		log.Println(err)
+		var validation validator.ValidationErrors
+		if errors.As(err, &validation) {
+			result := make([]error.Form, len(validation))
+			for i, v := range validation {
+				result[i] = error.Form{
+					Field:   v.Field(),
+					Message: error.FormValidationError(v),
+				}
+			}
+			resp := api.APIResponse("Update Comment Failed", http.StatusBadRequest, "error", result)
+			c.JSON(http.StatusBadRequest, resp)
+			return
+		}
+		errorMessage := api.SetError(err.Error())
+		resp := api.APIResponse("Update Comment Failed", http.StatusBadRequest, "error", errorMessage)
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	if input.PhotoID == 0 && input.Message == "" {
+		errMessage := api.SetError("Photo ID and Comment Cannot Be Empty!")
+		resp := api.APIResponse("Update Comment Failed", http.StatusBadRequest, "error", errMessage)
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	user := c.MustGet("currentUser").(domainUser.User)
+	comment, err := cc.CommentUseCase.UpdateComment(id, input, user.ID)
+	if err != nil {
+		log.Println(err)
+		if error.IsSame(err, error.ErrPhotoNotFound) {
+			errMessage := api.SetError("Cannot Update Comment, Photo Not Found!")
+			resp := api.APIResponse("Update Comment Failed", http.StatusNotFound, "error", errMessage)
+			c.JSON(http.StatusNotFound, resp)
+			return
+		}
+		if error.IsSame(err, error.ErrCommentNotFound) || error.IsSame(err, error.ErrDataNotFound) {
+			errMessage := api.SetError("Comment Not Found!")
+			resp := api.APIResponse("Update Comment Failed", http.StatusNotFound, "error", errMessage)
+			c.JSON(http.StatusNotFound, resp)
+			return
+		}
+		resp := api.APIResponse("Update Comment Failed", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	resp := api.APIResponse("Update Comment Success", http.StatusOK, "success", comment)
+	c.JSON(http.StatusOK, resp)
+}

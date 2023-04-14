@@ -9,6 +9,7 @@ type CommentAdapter interface {
 	GetAllComments(idPhotos string, idUser int) ([]domain.Comment, error)
 	GetCommentById(id string) (domain.Comment, error)
 	CreateComment(input domain.InsertComment) (domain.Comment, error)
+	UpdateComment(idComments string, input domain.UpdateComment, idUser int) (domain.Comment, error)
 }
 
 type CommentUseCase struct {

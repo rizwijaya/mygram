@@ -10,6 +10,7 @@ type RepositoryPresenter interface {
 	FindAllComments(idPhotos string, idUser int) ([]domain.Comment, error)
 	FindCommentById(id string) (domain.Comment, error)
 	SaveComment(comment domain.Comment) (domain.Comment, error)
+	UpdateComment(comment domain.Comment, id string) (domain.Comment, error)
 	FindPhotoById(id int) (domain.Photo, error)
 }
 

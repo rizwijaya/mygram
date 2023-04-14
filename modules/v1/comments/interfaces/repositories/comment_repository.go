@@ -1,6 +1,10 @@
 package repository
 
-import "mygram/modules/v1/comments/domain"
+import (
+	"mygram/modules/v1/comments/domain"
+
+	"gorm.io/gorm/clause"
+)
 
 func (r *Repository) FindAllComments(idPhotos string, idUser int) ([]domain.Comment, error) {
 	var comments []domain.Comment
@@ -16,6 +20,11 @@ func (r *Repository) FindCommentById(id string) (domain.Comment, error) {
 
 func (r *Repository) SaveComment(comment domain.Comment) (domain.Comment, error) {
 	err := r.db.Create(&comment).Error
+	return comment, err
+}
+
+func (r *Repository) UpdateComment(comment domain.Comment, id string) (domain.Comment, error) {
+	err := r.db.Model(&comment).Clauses(clause.Returning{}).Where("id = ?", id).Updates(&comment).Error
 	return comment, err
 }
 

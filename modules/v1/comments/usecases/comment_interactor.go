@@ -50,3 +50,37 @@ func (cu *CommentUseCase) CreateComment(input domain.InsertComment) (domain.Comm
 
 	return cu.repoComment.SaveComment(comment)
 }
+
+func (cu *CommentUseCase) UpdateComment(idComments string, input domain.UpdateComment, idUser int) (domain.Comment, error) {
+	if input.PhotoID != 0 {
+		//Validate Photo Exist
+		photo, err := cu.repoComment.FindPhotoById(input.PhotoID)
+		if err != nil {
+			return domain.Comment{}, errorHandling.ErrPhotoNotFound
+		}
+
+		if photo.ID == 0 {
+			return domain.Comment{}, errorHandling.ErrPhotoNotFound
+		}
+	}
+	//Check Comment Exist
+	comment, err := cu.GetCommentById(idComments)
+	if err != nil {
+		return domain.Comment{}, err
+	}
+
+	if comment.ID == 0 {
+		return domain.Comment{}, errorHandling.ErrCommentNotFound
+	}
+
+	if comment.UserID != idUser {
+		return domain.Comment{}, errorHandling.ErrCommentNotFound
+	}
+
+	updateComment := domain.Comment{
+		PhotoID: input.PhotoID,
+		Message: input.Message,
+	}
+
+	return cu.repoComment.UpdateComment(updateComment, idComments)
+}

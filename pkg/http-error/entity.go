@@ -13,6 +13,7 @@ var (
 	ErrSocialMediaAlreadyExist = errors.New("social media already exist")
 	ErrSocialMediaNotFound     = errors.New("social media not found")
 	ErrPhotoNotFound           = errors.New("photo not found")
+	ErrCommentNotFound         = errors.New("comment not found")
 )
 
 type Form struct {
