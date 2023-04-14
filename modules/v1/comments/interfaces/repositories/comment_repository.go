@@ -59,3 +59,7 @@ func (r *Repository) UpdatePhoto(photo domain.CreatedPhoto, id string) (domain.C
 	err := r.db.Model(&photo).Clauses(clause.Returning{}).Where("id = ?", id).Updates(&photo).Error
 	return photo, err
 }
+
+func (r *Repository) DeletePhoto(id string) error {
+	return r.db.Where("id = ?", id).Delete(&domain.Photo{}).Error
+}

@@ -17,6 +17,7 @@ type RepositoryPresenter interface {
 	FindPhoto(idPhotos string, idUser int) (domain.Photo, error)
 	SavePhoto(photo domain.CreatedPhoto) (domain.CreatedPhoto, error)
 	UpdatePhoto(photo domain.CreatedPhoto, id string) (domain.CreatedPhoto, error)
+	DeletePhoto(id string) error
 }
 
 type Repository struct {

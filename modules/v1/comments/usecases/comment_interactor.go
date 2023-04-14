@@ -163,3 +163,19 @@ func (cu *CommentUseCase) UpdatePhoto(id string, input domain.UpdatePhoto) (doma
 
 	return cu.repoComment.UpdatePhoto(updatePhoto, id)
 }
+
+func (cu *CommentUseCase) DeletePhoto(idPhoto string, idUser int) error {
+	photo, err := cu.repoComment.FindPhoto(idPhoto, idUser)
+	if err != nil {
+		if errorHandling.IsSame(err, errorHandling.ErrDataNotFound) {
+			return errorHandling.ErrPhotoNotFound
+		}
+		return err
+	}
+
+	if photo.ID == 0 {
+		return errorHandling.ErrPhotoNotFound
+	}
+
+	return cu.repoComment.DeletePhoto(idPhoto)
+}

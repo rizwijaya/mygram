@@ -292,3 +292,23 @@ func (cc *CommentController) UpdatePhoto(c *gin.Context) {
 	resp := api.APIResponse("Update Photo Success", http.StatusOK, "success", photo)
 	c.JSON(http.StatusOK, resp)
 }
+
+func (cc *CommentController) DeletePhoto(c *gin.Context) {
+	id := c.Param("id")
+	user := c.MustGet("currentUser").(domainUser.User)
+	err := cc.CommentUseCase.DeletePhoto(id, user.ID)
+	if err != nil {
+		log.Println(err)
+		if error.IsSame(err, error.ErrPhotoNotFound) {
+			errMessage := api.SetError("Photo Not Found!")
+			resp := api.APIResponse("Delete Photo Failed", http.StatusNotFound, "error", errMessage)
+			c.JSON(http.StatusNotFound, resp)
+			return
+		}
+		resp := api.APIResponse("Delete Photo Failed", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	resp := api.APIResponse("Delete Photo Success", http.StatusOK, "success", nil)
+	c.JSON(http.StatusOK, resp)
+}
