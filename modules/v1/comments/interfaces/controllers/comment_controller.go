@@ -206,3 +206,39 @@ func (cc *CommentController) GetPhotoById(c *gin.Context) {
 	resp := api.APIResponse("Get Photo By ID Success", http.StatusOK, "success", photo)
 	c.JSON(http.StatusOK, resp)
 }
+
+func (cc *CommentController) CreatePhoto(c *gin.Context) {
+	var input domain.InsertPhoto
+	if err := c.ShouldBindJSON(&input); err != nil {
+		log.Println(err)
+		var validation validator.ValidationErrors
+		if errors.As(err, &validation) {
+			result := make([]error.Form, len(validation))
+			for i, v := range validation {
+				result[i] = error.Form{
+					Field:   v.Field(),
+					Message: error.FormValidationError(v),
+				}
+			}
+			resp := api.APIResponse("Create Photo Failed", http.StatusBadRequest, "error", result)
+			c.JSON(http.StatusBadRequest, resp)
+			return
+		}
+		errorMessage := api.SetError(err.Error())
+		resp := api.APIResponse("Create Photo Failed", http.StatusBadRequest, "error", errorMessage)
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	user := c.MustGet("currentUser").(domainUser.User)
+	input.UserID = user.ID
+	photo, err := cc.CommentUseCase.CreatePhoto(input)
+	if err != nil {
+		log.Println(err)
+		resp := api.APIResponse("Create Photo Failed", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	resp := api.APIResponse("Create Photo Success", http.StatusOK, "success", photo)
+	c.JSON(http.StatusOK, resp)
+}

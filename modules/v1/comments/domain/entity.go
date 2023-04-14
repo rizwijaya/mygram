@@ -46,3 +46,15 @@ type CommentPhoto struct {
 func (CommentPhoto) TableName() string {
 	return "comments"
 }
+
+type CreatedPhoto struct {
+	GormModel
+	Title    string `json:"title" gorm:"column:title"`
+	Caption  string `json:"caption" gorm:"column:caption"`
+	PhotoUrl string `json:"photo_url" gorm:"column:photo_url"`
+	UserID   int    `json:"user_id" gorm:"column:user_id"`
+}
+
+func (CreatedPhoto) TableName() string {
+	return "photos"
+}

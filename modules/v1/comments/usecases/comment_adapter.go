@@ -13,6 +13,7 @@ type CommentAdapter interface {
 	DeleteComment(idComment string, idUser int) error
 	GetAllPhotos() ([]domain.Photo, error)
 	GetPhotoById(idPhotos string, idUser int) (domain.Photo, error)
+	CreatePhoto(input domain.InsertPhoto) (domain.CreatedPhoto, error)
 }
 
 type CommentUseCase struct {

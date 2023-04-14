@@ -27,6 +27,7 @@ func NewRouter(router *gin.Engine, db *gorm.DB) *gin.Engine {
 		{
 			photos.GET("", commentControllerV1.GetAllPhotos)
 			photos.GET("/:id", commentControllerV1.GetPhotoById)
+			photos.POST("", commentControllerV1.CreatePhoto)
 		}
 	}
 	return router

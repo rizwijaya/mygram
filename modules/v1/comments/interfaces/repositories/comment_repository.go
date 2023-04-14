@@ -49,3 +49,8 @@ func (r *Repository) FindPhoto(idPhotos string, idUser int) (domain.Photo, error
 	err := r.db.Preload("User").Preload("Comments").Where("id = ? AND user_id = ?", idPhotos, idUser).First(&photo).Error
 	return photo, err
 }
+
+func (r *Repository) SavePhoto(photo domain.CreatedPhoto) (domain.CreatedPhoto, error) {
+	err := r.db.Create(&photo).Error
+	return photo, err
+}

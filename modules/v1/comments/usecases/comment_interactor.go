@@ -33,7 +33,7 @@ func (cu *CommentUseCase) GetCommentById(id string) (domain.Comment, error) {
 
 func (cu *CommentUseCase) CreateComment(input domain.InsertComment) (domain.Comment, error) {
 	//Validate Photo Exist
-	photo, err := cu.repoComment.FindPhotoById(input.PhotoID)
+	photo, err := cu.repoComment.FindPhotoById(input.Photo_id)
 	if err != nil {
 		return domain.Comment{}, errorHandling.ErrPhotoNotFound
 	}
@@ -43,7 +43,7 @@ func (cu *CommentUseCase) CreateComment(input domain.InsertComment) (domain.Comm
 	}
 
 	comment := domain.Comment{
-		PhotoID: input.PhotoID,
+		PhotoID: input.Photo_id,
 		UserID:  input.UserID,
 		Message: input.Message,
 	}
@@ -128,4 +128,15 @@ func (cu *CommentUseCase) GetPhotoById(idPhotos string, idUser int) (domain.Phot
 	}
 
 	return photo, nil
+}
+
+func (cu *CommentUseCase) CreatePhoto(input domain.InsertPhoto) (domain.CreatedPhoto, error) {
+	photo := domain.CreatedPhoto{
+		Title:    input.Title,
+		Caption:  input.Caption,
+		PhotoUrl: input.Photo_url,
+		UserID:   input.UserID,
+	}
+
+	return cu.repoComment.SavePhoto(photo)
 }
