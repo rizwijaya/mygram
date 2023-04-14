@@ -25,10 +25,10 @@ type SocialMedia struct {
 }
 
 type UserSocialMedia struct {
-	GormModelID int    `json:"id" gorm:"column:id"`
-	UserName    string `json:"username" gorm:"column:username"`
-	Email       string `json:"email" gorm:"column:email"`
-	Age         int    `json:"age" gorm:"column:age"`
+	ID       int    `json:"id" gorm:"column:id"`
+	UserName string `json:"username" gorm:"column:username"`
+	Email    string `json:"email" gorm:"column:email"`
+	Age      int    `json:"age" gorm:"column:age"`
 }
 
 func (UserSocialMedia) TableName() string {

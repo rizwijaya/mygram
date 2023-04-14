@@ -26,7 +26,7 @@ type Photo struct {
 	PhotoUrl string    `json:"photo_url" gorm:"column:photo_url;type:varchar(200);not null"`
 	UserID   int       `json:"user_id" gorm:"column:user_id;type:int;not null"`
 	User     *User     `json:"user" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
-	Comments []Comment `json:"comments" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL"`
+	Comments []Comment `json:"comments" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;foreignKey:photo_id;references:ID"`
 }
 
 type Comment struct {

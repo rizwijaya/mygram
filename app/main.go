@@ -32,7 +32,7 @@ func main() {
 	router = routesUsersV1.NewRouter(router, db)
 	router = routesCommentsV1.NewRouter(router, db)
 
-	router.NoRoute(error.PageNotFound())
+	router.NoRoute(error.NotFound())
 	router.NoMethod(error.NoMethod())
 
 	router.Run(":" + config.App.Port)
