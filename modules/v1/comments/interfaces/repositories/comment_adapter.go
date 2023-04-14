@@ -7,8 +7,10 @@ import (
 )
 
 type RepositoryPresenter interface {
-	FindAllComments(idPhotos string) ([]domain.Comment, error)
+	FindAllComments(idPhotos string, idUser int) ([]domain.Comment, error)
 	FindCommentById(id string) (domain.Comment, error)
+	SaveComment(comment domain.Comment) (domain.Comment, error)
+	FindPhotoById(id int) (domain.Photo, error)
 }
 
 type Repository struct {

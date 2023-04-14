@@ -2,20 +2,25 @@ package repository
 
 import "mygram/modules/v1/comments/domain"
 
-func (r *Repository) FindAllComments(idPhotos string) ([]domain.Comment, error) {
+func (r *Repository) FindAllComments(idPhotos string, idUser int) ([]domain.Comment, error) {
 	var comments []domain.Comment
-	err := r.db.Where("photo_id = ?", idPhotos).Find(&comments).Error
-	if err != nil {
-		return nil, err
-	}
-	return comments, nil
+	err := r.db.Where("photo_id = ? AND user_id = ?", idPhotos, idUser).Find(&comments).Error
+	return comments, err
 }
 
 func (r *Repository) FindCommentById(id string) (domain.Comment, error) {
 	var comment domain.Comment
 	err := r.db.Where("id = ?", id).First(&comment).Error
-	if err != nil {
-		return domain.Comment{}, err
-	}
-	return comment, nil
+	return comment, err
+}
+
+func (r *Repository) SaveComment(comment domain.Comment) (domain.Comment, error) {
+	err := r.db.Create(&comment).Error
+	return comment, err
+}
+
+func (r *Repository) FindPhotoById(id int) (domain.Photo, error) {
+	var photo domain.Photo
+	err := r.db.Preload("User").Preload("Comments").Where("id = ?", id).First(&photo).Error
+	return photo, err
 }

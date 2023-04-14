@@ -38,6 +38,8 @@ func FormValidationError(fe validator.FieldError) string {
 		return fe.Field() + " maximum " + fe.Param()
 	case "alphanum":
 		return fe.Field() + " must be alphanumeric!"
+	case "number":
+		return fe.Field() + " must be a number!"
 	case "numeric":
 		return fe.Field() + " must be numeric!"
 	case "eqfield":
