@@ -14,6 +14,7 @@ type CommentAdapter interface {
 	GetAllPhotos() ([]domain.Photo, error)
 	GetPhotoById(idPhotos string, idUser int) (domain.Photo, error)
 	CreatePhoto(input domain.InsertPhoto) (domain.CreatedPhoto, error)
+	UpdatePhoto(id string, input domain.UpdatePhoto) (domain.CreatedPhoto, error)
 }
 
 type CommentUseCase struct {

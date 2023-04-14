@@ -140,3 +140,26 @@ func (cu *CommentUseCase) CreatePhoto(input domain.InsertPhoto) (domain.CreatedP
 
 	return cu.repoComment.SavePhoto(photo)
 }
+
+func (cu *CommentUseCase) UpdatePhoto(id string, input domain.UpdatePhoto) (domain.CreatedPhoto, error) {
+	//Check Photo Exist
+	photo, err := cu.repoComment.FindPhoto(id, input.UserID)
+	if err != nil {
+		if errorHandling.IsSame(err, errorHandling.ErrDataNotFound) {
+			return domain.CreatedPhoto{}, errorHandling.ErrPhotoNotFound
+		}
+		return domain.CreatedPhoto{}, err
+	}
+
+	if photo.ID == 0 {
+		return domain.CreatedPhoto{}, errorHandling.ErrPhotoNotFound
+	}
+
+	updatePhoto := domain.CreatedPhoto{
+		Title:    input.Title,
+		Caption:  input.Caption,
+		PhotoUrl: input.Photo_url,
+	}
+
+	return cu.repoComment.UpdatePhoto(updatePhoto, id)
+}

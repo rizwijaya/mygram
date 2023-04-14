@@ -18,3 +18,10 @@ type InsertPhoto struct {
 	Photo_url string `json:"photo_url" gorm:"column:photo_url" binding:"required,url"`
 	UserID    int    `json:"-" gorm:"column:user_id"`
 }
+
+type UpdatePhoto struct {
+	Title     string `json:"title" gorm:"column:title" binding:"omitempty"`
+	Caption   string `json:"caption" gorm:"column:caption" binding:"omitempty"`
+	Photo_url string `json:"photo_url" gorm:"column:photo_url" binding:"omitempty,url"`
+	UserID    int    `json:"-" gorm:"column:-"`
+}

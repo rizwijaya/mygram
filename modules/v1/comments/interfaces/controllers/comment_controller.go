@@ -242,3 +242,53 @@ func (cc *CommentController) CreatePhoto(c *gin.Context) {
 	resp := api.APIResponse("Create Photo Success", http.StatusOK, "success", photo)
 	c.JSON(http.StatusOK, resp)
 }
+
+func (cc *CommentController) UpdatePhoto(c *gin.Context) {
+	id := c.Param("id")
+	var input domain.UpdatePhoto
+	if err := c.ShouldBindJSON(&input); err != nil {
+		log.Println(err)
+		var validation validator.ValidationErrors
+		if errors.As(err, &validation) {
+			result := make([]error.Form, len(validation))
+			for i, v := range validation {
+				result[i] = error.Form{
+					Field:   v.Field(),
+					Message: error.FormValidationError(v),
+				}
+			}
+			resp := api.APIResponse("Update Photo Failed", http.StatusBadRequest, "error", result)
+			c.JSON(http.StatusBadRequest, resp)
+			return
+		}
+		errorMessage := api.SetError(err.Error())
+		resp := api.APIResponse("Update Photo Failed", http.StatusBadRequest, "error", errorMessage)
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	if input.Caption == "" && input.Title == "" && input.Photo_url == "" {
+		errMessage := api.SetError("Caption, Title, Photo_url cannot be empty!")
+		resp := api.APIResponse("Update Photo Failed", http.StatusBadRequest, "error", errMessage)
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	user := c.MustGet("currentUser").(domainUser.User)
+	input.UserID = user.ID
+	photo, err := cc.CommentUseCase.UpdatePhoto(id, input)
+	if err != nil {
+		log.Println(err)
+		if error.IsSame(err, error.ErrPhotoNotFound) {
+			errMessage := api.SetError("Photo Not Found!")
+			resp := api.APIResponse("Update Photo Failed", http.StatusNotFound, "error", errMessage)
+			c.JSON(http.StatusNotFound, resp)
+			return
+		}
+		resp := api.APIResponse("Update Photo Failed", http.StatusInternalServerError, "error", nil)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	resp := api.APIResponse("Update Photo Success", http.StatusOK, "success", photo)
+	c.JSON(http.StatusOK, resp)
+}

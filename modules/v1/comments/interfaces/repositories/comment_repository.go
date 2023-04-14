@@ -54,3 +54,8 @@ func (r *Repository) SavePhoto(photo domain.CreatedPhoto) (domain.CreatedPhoto, 
 	err := r.db.Create(&photo).Error
 	return photo, err
 }
+
+func (r *Repository) UpdatePhoto(photo domain.CreatedPhoto, id string) (domain.CreatedPhoto, error) {
+	err := r.db.Model(&photo).Clauses(clause.Returning{}).Where("id = ?", id).Updates(&photo).Error
+	return photo, err
+}
