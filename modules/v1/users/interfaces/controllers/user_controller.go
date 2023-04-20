@@ -151,6 +151,7 @@ func (uc *UserController) Login(c *gin.Context) {
 // @Produce json
 // @Success 200 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/media [get]
 func (uc *UserController) GetAllSocialMedia(c *gin.Context) {
 	media, err := uc.UserUseCase.AllSocialMedia()
@@ -178,6 +179,7 @@ func (uc *UserController) GetAllSocialMedia(c *gin.Context) {
 // @Success 200 {object} api.Response
 // @Failure 404 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/media/{id} [get]
 func (uc *UserController) GetOneSocialMedia(c *gin.Context) {
 	id := c.Param("id")
@@ -207,6 +209,7 @@ func (uc *UserController) GetOneSocialMedia(c *gin.Context) {
 // @Success 200 {object} api.Response
 // @Failure 400 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/media [post]
 func (uc *UserController) CreateSocialMedia(c *gin.Context) {
 	var input domain.InsertSocialMedia
@@ -264,6 +267,7 @@ func (uc *UserController) CreateSocialMedia(c *gin.Context) {
 // @Failure 400 {object} api.Response
 // @Failure 404 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/media/{id} [put]
 func (uc *UserController) UpdateSocialMedia(c *gin.Context) {
 	id := c.Param("id")
@@ -324,6 +328,7 @@ func (uc *UserController) UpdateSocialMedia(c *gin.Context) {
 // @Success 200 {object} api.Response
 // @Failure 404 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/media/{id} [delete]
 func (uc *UserController) DeleteSocialMedia(c *gin.Context) {
 	id := c.Param("id")

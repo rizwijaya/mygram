@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "mygram/docs"
 	"mygram/infrastructures/config"
 	database "mygram/infrastructures/databases"
 	routesCommentsV1 "mygram/modules/v1/comments/routes"
@@ -9,6 +10,8 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // @title			MyGram API
@@ -21,7 +24,9 @@ import (
 // @licence.url	http://opensource.org/licenses/MIT
 // @host			localhost:8080
 // @BasePath		/
-// @securityDefinitions ApiKeyAuth
+// @securityDefinitions.apiKey JWT
+// @in header
+// @name Authorization
 func main() {
 	config := config.New()
 
@@ -31,7 +36,7 @@ func main() {
 
 	router = routesUsersV1.NewRouter(router, db)
 	router = routesCommentsV1.NewRouter(router, db)
-
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.NoRoute(error.NotFound())
 	router.NoMethod(error.NoMethod())
 

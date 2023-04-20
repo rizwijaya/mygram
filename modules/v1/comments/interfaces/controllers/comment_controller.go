@@ -22,6 +22,7 @@ import (
 // @Success 200 {object} api.Response
 // @Failure 404 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/comments/{id_photos} [get]
 func (cc *CommentController) GetAllComments(c *gin.Context) {
 	idPhotos := c.Param("id_photos")
@@ -52,6 +53,7 @@ func (cc *CommentController) GetAllComments(c *gin.Context) {
 // @Success 200 {object} api.Response
 // @Failure 404 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/comments/id/{id} [get]
 func (cc *CommentController) GetCommentById(c *gin.Context) {
 	id := c.Param("id")
@@ -82,6 +84,7 @@ func (cc *CommentController) GetCommentById(c *gin.Context) {
 // @Failure 400 {object} api.Response
 // @Failure 404 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/comments [post]
 func (cc *CommentController) CreateComment(c *gin.Context) {
 	var input domain.InsertComment
@@ -136,6 +139,7 @@ func (cc *CommentController) CreateComment(c *gin.Context) {
 // @Failure 400 {object} api.Response
 // @Failure 404 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/comments/{id} [put]
 func (cc *CommentController) UpdateComment(c *gin.Context) {
 	id := c.Param("id")
@@ -201,6 +205,7 @@ func (cc *CommentController) UpdateComment(c *gin.Context) {
 // @Success 200 {object} api.Response
 // @Failure 404 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/comments/{id} [delete]
 func (cc *CommentController) DeleteComment(c *gin.Context) {
 	id := c.Param("id")
@@ -230,6 +235,7 @@ func (cc *CommentController) DeleteComment(c *gin.Context) {
 // @Success 200 {object} api.Response
 // @Failure 404 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/photos [get]
 func (cc *CommentController) GetAllPhotos(c *gin.Context) {
 	photos, err := cc.CommentUseCase.GetAllPhotos()
@@ -258,6 +264,7 @@ func (cc *CommentController) GetAllPhotos(c *gin.Context) {
 // @Success 200 {object} api.Response
 // @Failure 404 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/photos/{id} [get]
 func (cc *CommentController) GetPhotoById(c *gin.Context) {
 	id := c.Param("id")
@@ -288,6 +295,7 @@ func (cc *CommentController) GetPhotoById(c *gin.Context) {
 // @Success 200 {object} api.Response
 // @Failure 400 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/photos [post]
 func (cc *CommentController) CreatePhoto(c *gin.Context) {
 	var input domain.InsertPhoto
@@ -335,6 +343,7 @@ func (cc *CommentController) CreatePhoto(c *gin.Context) {
 // @Success 200 {object} api.Response
 // @Failure 400 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/photos/{id} [put]
 func (cc *CommentController) UpdatePhoto(c *gin.Context) {
 	id := c.Param("id")
@@ -395,6 +404,7 @@ func (cc *CommentController) UpdatePhoto(c *gin.Context) {
 // @Success 200 {object} api.Response
 // @Failure 404 {object} api.Response
 // @Failure 500 {object} api.Response
+// @Failure 401 {object} api.Response
 // @Router /api/v1/photos/{id} [delete]
 func (cc *CommentController) DeletePhoto(c *gin.Context) {
 	id := c.Param("id")
