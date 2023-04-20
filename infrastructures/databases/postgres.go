@@ -30,12 +30,12 @@ func NewDatabases() *gorm.DB {
 	}
 	fmt.Println("Successfully connected!")
 
-	// err = db.AutoMigrate(&User{}, &Photo{}, &Comment{}, &SocialMedia{})
-	// if err != nil {
-	// 	log.Fatalln(err)
-	// 	return nil
-	// }
-	// fmt.Println("Migration successfully done")
+	err = db.AutoMigrate(&User{}, &Photo{}, &Comment{}, &SocialMedia{})
+	if err != nil {
+		log.Fatalln(err)
+		return nil
+	}
+	fmt.Println("Migration successfully done")
 
 	return db
 }
