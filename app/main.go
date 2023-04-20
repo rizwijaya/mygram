@@ -24,7 +24,7 @@ import (
 // @licence.url	http://opensource.org/licenses/MIT
 // @host			localhost:8080
 // @BasePath		/
-// @securityDefinitions.apiKey JWT
+// @securityDefinitions.apiKey BearerAuth
 // @in header
 // @name Authorization
 func main() {
