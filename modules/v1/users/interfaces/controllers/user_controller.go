@@ -13,6 +13,16 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// @Summary Register User
+// @Description Register User
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param input body domain.RegisterUserInput true "Register User Input"
+// @Success 200 {object} api.Response
+// @Failure 400 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/users/register [post]
 func (uc *UserController) Register(c *gin.Context) {
 	//Check Input Users and Validation
 	var input domain.RegisterUserInput
@@ -68,6 +78,16 @@ func (uc *UserController) Register(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Login User
+// @Description Login User
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param input body domain.LoginUserInput true "Login User Input"
+// @Success 200 {object} api.Response
+// @Failure 400 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/users/login [post]
 func (uc *UserController) Login(c *gin.Context) {
 	//Check Input Users and Validation
 	var input domain.LoginUserInput
@@ -95,7 +115,7 @@ func (uc *UserController) Login(c *gin.Context) {
 	user, err := uc.UserUseCase.LoginUser(input)
 	if err != nil {
 		log.Println(err)
-		if error.IsSame(err, error.ErrEmailNotFound) {
+		if error.IsSame(err, error.ErrEmailNotFound) || error.IsSame(err, error.ErrDataLoginNotFound) {
 			errorMessage := api.SetError("email/password is wrong")
 			resp := api.APIResponse("Login Failed", http.StatusNotFound, "error", errorMessage)
 			c.JSON(http.StatusNotFound, resp)
@@ -124,6 +144,14 @@ func (uc *UserController) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Get All Social Media
+// @Description Get All Social Media
+// @Tags Social Media
+// @Accept json
+// @Produce json
+// @Success 200 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/media [get]
 func (uc *UserController) GetAllSocialMedia(c *gin.Context) {
 	media, err := uc.UserUseCase.AllSocialMedia()
 	if err != nil {
@@ -141,6 +169,16 @@ func (uc *UserController) GetAllSocialMedia(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Get One Social Media
+// @Description Get One Social Media
+// @Tags Social Media
+// @Accept json
+// @Produce json
+// @Param id path string true "Social Media ID"
+// @Success 200 {object} api.Response
+// @Failure 404 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/media/{id} [get]
 func (uc *UserController) GetOneSocialMedia(c *gin.Context) {
 	id := c.Param("id")
 	media, err := uc.UserUseCase.OneSocialMedia(id)
@@ -160,6 +198,16 @@ func (uc *UserController) GetOneSocialMedia(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Create Social Media
+// @Description Create Social Media
+// @Tags Social Media
+// @Accept json
+// @Produce json
+// @Param name body domain.InsertSocialMedia true "Create Social Media"
+// @Success 200 {object} api.Response
+// @Failure 400 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/media [post]
 func (uc *UserController) CreateSocialMedia(c *gin.Context) {
 	var input domain.InsertSocialMedia
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -205,6 +253,18 @@ func (uc *UserController) CreateSocialMedia(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Update Social Media
+// @Description Update Social Media
+// @Tags Social Media
+// @Accept json
+// @Produce json
+// @Param id path string true "Social Media ID"
+// @Param name body domain.UpdateSocialMedia true "Update Social Media"
+// @Success 200 {object} api.Response
+// @Failure 400 {object} api.Response
+// @Failure 404 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/media/{id} [put]
 func (uc *UserController) UpdateSocialMedia(c *gin.Context) {
 	id := c.Param("id")
 	var input domain.UpdateSocialMedia
@@ -255,6 +315,16 @@ func (uc *UserController) UpdateSocialMedia(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Delete Social Media
+// @Description Delete Social Media
+// @Tags Social Media
+// @Accept json
+// @Produce json
+// @Param id path string true "Social Media ID"
+// @Success 200 {object} api.Response
+// @Failure 404 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/media/{id} [delete]
 func (uc *UserController) DeleteSocialMedia(c *gin.Context) {
 	id := c.Param("id")
 	currentUser := c.MustGet("currentUser").(domain.User)

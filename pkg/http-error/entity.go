@@ -14,6 +14,7 @@ var (
 	ErrSocialMediaNotFound     = errors.New("social media not found")
 	ErrPhotoNotFound           = errors.New("photo not found")
 	ErrCommentNotFound         = errors.New("comment not found")
+	ErrDataLoginNotFound       = errors.New("crypto/bcrypt: hashedPassword is not the hash of the given password")
 )
 
 type Form struct {

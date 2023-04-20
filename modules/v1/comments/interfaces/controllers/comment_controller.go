@@ -13,6 +13,16 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// @Summary Get All Comments
+// @Description Get All Comments
+// @Tags Comments
+// @Accept  json
+// @Produce  json
+// @Param id_photos path string true "Id Photos"
+// @Success 200 {object} api.Response
+// @Failure 404 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/comments/{id_photos} [get]
 func (cc *CommentController) GetAllComments(c *gin.Context) {
 	idPhotos := c.Param("id_photos")
 	user := c.MustGet("currentUser").(domainUser.User)
@@ -33,6 +43,16 @@ func (cc *CommentController) GetAllComments(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Get Comment By Id
+// @Description Get Comment By Id
+// @Tags Comments
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Id Comment"
+// @Success 200 {object} api.Response
+// @Failure 404 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/comments/id/{id} [get]
 func (cc *CommentController) GetCommentById(c *gin.Context) {
 	id := c.Param("id")
 	comment, err := cc.CommentUseCase.GetCommentById(id)
@@ -52,6 +72,17 @@ func (cc *CommentController) GetCommentById(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Create Comment
+// @Description Create Comment
+// @Tags Comments
+// @Accept  json
+// @Produce  json
+// @Param body body domain.InsertComment true "Body"
+// @Success 200 {object} api.Response
+// @Failure 400 {object} api.Response
+// @Failure 404 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/comments [post]
 func (cc *CommentController) CreateComment(c *gin.Context) {
 	var input domain.InsertComment
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -94,6 +125,18 @@ func (cc *CommentController) CreateComment(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Update Comment
+// @Description Update Comment
+// @Tags Comments
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Id Comment"
+// @Param body body domain.UpdateComment true "Body"
+// @Success 200 {object} api.Response
+// @Failure 400 {object} api.Response
+// @Failure 404 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/comments/{id} [put]
 func (cc *CommentController) UpdateComment(c *gin.Context) {
 	id := c.Param("id")
 	var input domain.UpdateComment
@@ -149,6 +192,16 @@ func (cc *CommentController) UpdateComment(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Delete Comment
+// @Description Delete Comment
+// @Tags Comments
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Id Comment"
+// @Success 200 {object} api.Response
+// @Failure 404 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/comments/{id} [delete]
 func (cc *CommentController) DeleteComment(c *gin.Context) {
 	id := c.Param("id")
 	user := c.MustGet("currentUser").(domainUser.User)
@@ -169,6 +222,15 @@ func (cc *CommentController) DeleteComment(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Get All Photos
+// @Description Get All Photos
+// @Tags Photos
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} api.Response
+// @Failure 404 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/photos [get]
 func (cc *CommentController) GetAllPhotos(c *gin.Context) {
 	photos, err := cc.CommentUseCase.GetAllPhotos()
 	if err != nil {
@@ -187,6 +249,16 @@ func (cc *CommentController) GetAllPhotos(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Get Photo By ID
+// @Description Get Photo By ID
+// @Tags Photos
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Id Photo"
+// @Success 200 {object} api.Response
+// @Failure 404 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/photos/{id} [get]
 func (cc *CommentController) GetPhotoById(c *gin.Context) {
 	id := c.Param("id")
 	user := c.MustGet("currentUser").(domainUser.User)
@@ -207,6 +279,16 @@ func (cc *CommentController) GetPhotoById(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Create Photo
+// @Description Create Photo
+// @Tags Photos
+// @Accept  json
+// @Produce  json
+// @Param input body domain.InsertPhoto true "Input Create Photo"
+// @Success 200 {object} api.Response
+// @Failure 400 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/photos [post]
 func (cc *CommentController) CreatePhoto(c *gin.Context) {
 	var input domain.InsertPhoto
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -243,6 +325,17 @@ func (cc *CommentController) CreatePhoto(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Update Photo
+// @Description Update Photo
+// @Tags Photos
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Id Photo"
+// @Param input body domain.UpdatePhoto true "Input Update Photo"
+// @Success 200 {object} api.Response
+// @Failure 400 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/photos/{id} [put]
 func (cc *CommentController) UpdatePhoto(c *gin.Context) {
 	id := c.Param("id")
 	var input domain.UpdatePhoto
@@ -293,6 +386,16 @@ func (cc *CommentController) UpdatePhoto(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Delete Photo
+// @Description Delete Photo
+// @Tags Photos
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Id Photo"
+// @Success 200 {object} api.Response
+// @Failure 404 {object} api.Response
+// @Failure 500 {object} api.Response
+// @Router /api/v1/photos/{id} [delete]
 func (cc *CommentController) DeletePhoto(c *gin.Context) {
 	id := c.Param("id")
 	user := c.MustGet("currentUser").(domainUser.User)
